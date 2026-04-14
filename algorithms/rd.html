@@ -48,14 +48,89 @@
     </p>
 
     <p>
-      The stage of parsing takes the set of "tokens" from lexing, and uses an algorithm 
-      to give "meaning" to the "tokens". Which algorithm is chosen depends on the design
+      The stage of parsing takes the set of "tokens" from lexing, and attempts 
+      to give "meaning" to the "tokens". Which method is chosen depends on the design
       of the parsing stage, the needs of the language developer, opinions, etc.
     </p>
 
-    <p>The topic of this post, recursive descent, is one of the aforementioned algorithms.</p>
+    <p>The topic of this post, recursive descent, is one of the aforementioned techniques.</p>
 
-    <p>wip.</p>
+    <h3>Theory</h3>
+
+    <p>
+      Compiler design relies on a formal theory of languages. The significant aspect of this theory 
+      here is the concept of a grammar. A grammar consists of:
+    </p>
+
+
+    <ul>
+      <li>Variables: symbols that can be expanded</li>
+      <li>Terminals: symbols that cannot be expanded</li>
+      <li>Rules: ways to expand variables into variables/terminals</li>
+      <li>Start: symbol that begins evaluation</li>
+    </ul>
+
+    <p>
+      Here is an example: 
+    </p>
+
+    <p>
+      Expr -&gt; Expr + Term | Term
+      Term -&gt; Term * Factor | Factor
+      Factor -&gt; (Expr) | id
+    </p>
+
+    <p>
+      Here, the <i>variables</i> are Expr, Term, and Factor, the <i>rules</i> are the
+      lines, the terminal being "id", and the start Expr.
+    </p>
+
+    <h3>The Algorithm</h3>
+
+    <p>
+      With some theory provided, we cover the algorithm itself.
+    </p>
+
+    <p>
+      The basic idea is that, in code, each aspect of a formal grammar described above
+      becomes a part of the code. As in, the variables map to functions, terminals map
+      to tokens, and rules map to what goes on in the functions themselves.
+    </p>
+
+    <p>
+      As should be clear, this makes recursive descent a very easy to implement algorithm, 
+      as it closely matches the grammar with the code.
+    </p>
+    
+    <p>
+      However, this algorithm, like most, is not without its limitations.
+    </p>
+
+    <h3>Left Recursion</h3>
+
+    <p>
+      Recall the grammar from above. Notice the following rule:
+    </p>
+
+    <p>
+      Expr -&gt; Expr + Term | Term
+    </p>
+
+    <p>
+      In recursive descent, this will be written in code as something like the following:
+    </p>
+   
+    <pre><code>
+def parseExpr():
+    parseExpr()
+    match('+')
+    parseTerm() 
+    </code></pre>
+
+    <p>
+      Notice how the function does not ever stop calling itself.
+      This is exactly what one of the biggest issues with recursive descent is.
+    </p>
 
     <footer>
       <p>----------------------------------------------------------------------------------------------------</p>
