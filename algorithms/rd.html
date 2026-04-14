@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+  <head>
+    <meta name="color-scheme" content="dark"> <!-- change this if you want. -->
+    <title>akwhjfdudje's blog page</title>
+    <style>
+      body {
+        font-family: "Times New Roman", Times, serif;
+        max-width: 60ch;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Recursive Descent</h2>
+    <p>
+      Hello. This post is about recursive descent.
+    </p>
+    
+    <h3>Parsing</h3>
+    <p>
+      We will start with some background. 
+      Compilers, for a long time now, have been made with a particular design in mind.
+      Said design involves the stages of lexing, parsing, analysis, and code generation.
+    </p>
+
+    <p>
+      Note some things at this point:
+      <ul>This is not the only way to read programming languages.</ul>
+      <ul>The stage of "analysis" nowadays contains several "substages", which are not important for now.</ul>
+      <ul>"Code" in "code generation" here refers to the direct assembly that a compiled language turns into.
+      This is, of course, not the only output of a compiler. There are certainly several more "code"s that a 
+      compiler may output (that are not pure assembly).</ul>
+    </p>
+
+    <p>
+      The stage of lexing will be left as a black box for now.
+      All that is important is that lexing turns a sequence of words, symbols, etc.
+      into a set of "tokens".
+    </p>
+
+    <p>
+      The stage of parsing takes the set of "tokens" from lexing, and uses an algorithm 
+      to give "meaning" to the "tokens". Which algorithm is chosen depends on the design
+      of the parsing stage, the needs of the language developer, opinions, etc.
+    </p>
+
+    <p>The topic of this post, recursive descent, is one of the aforementioned algorithms.</p>
+
+    <p>wip.</p>
+
+    <footer>
+      <p>----------------------------------------------------------------------------------------------------</p>
+      <p>The simple design of this page is by choice. I hope that is fine.</p>
+      <p>© 2026-&lt;the_end_of_time&gt; akwhjfdudje</p>
+    </footer>
+  </body>
+</html>
