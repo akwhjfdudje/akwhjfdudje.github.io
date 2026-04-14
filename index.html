@@ -5,27 +5,35 @@
     <title>akwhjfdudje's blog page</title>
     <style>
       body {
+        height: 100%;
         font-family: "Times New Roman", Times, serif;
         max-width: 100ch;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
       }
       ul {
         list-style-type: none;
         padding-left: 0;
       }
+      main {
+        flex: 1;
+      }
     </style>
   </head>
   <body>
-    <h2>Hello. This is a blog.</h2>
-    <p>This is a page to put posts on. <i>More to come soon.</i></p>
-    <p>I will (hopefully) mainly be posting about low-level architecture and systems concepts I find interesting.</p>
-    <h3>groups:</h3>
-    <ul>
-      <li><a href="algorithms/index.html">algorithms/</a></li>
-    </ul>
+    <main>
+      <h2>Hello. This is a blog.</h2>
+      <p>This is a page for me to put posts on.</p>
+      <p>I will mainly be posting about low-level architecture and systems concepts I find interesting.</p>
+      <ul>
+        <li><a href="algorithms/index.html">algorithms</a></li>
+      </ul>
+    </main>
     <footer>
       <p>----------------------------------------------------------------------------------------------------</p>
       <p>The simple design of this page is by choice. I hope that is fine.</p>
-      <p>© 2026-&lt;the_end_of_time&gt; akwhjfdudje</p>
+      <p>copyright 2026-* akwhjfdudje</p>
     </footer>
   </body>
 </html>

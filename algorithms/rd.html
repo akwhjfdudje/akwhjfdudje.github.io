@@ -5,8 +5,12 @@
     <title>akwhjfdudje's blog page</title>
     <style>
       body {
+        height: 100%;
         font-family: "Times New Roman", Times, serif;
         max-width: 100ch;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
       }
       ul {
         list-style-type: none;
@@ -15,129 +19,145 @@
       li::before {
         content: "> ";
       }
+      main {
+        flex: 1;
+      }
     </style>
   </head>
   <body>
-    <h2>Recursive Descent</h2>
-    <p>
-      Hello. This post is about recursive descent.
-    </p>
-    
-    <h3>Parsing</h3>
-    <p>
-      We will start with some background. 
-      Compilers, for a long time now, have been made with a particular design in mind.
-      Said design involves the stages of lexing, parsing, analysis, and code generation.
-    </p>
+    <main>
 
-    <p>
-      Note some things at this point:
+      <h2>Recursive Descent</h2>
+      <p>
+        Hello. This post is about recursive descent.
+      </p>
+      
+      <h3>Parsing</h3>
+      <p>
+        We will start with some background. 
+        Compilers, for a long time now, have been made with a particular design in mind.
+        Said design involves the stages of lexing, parsing, analysis, and code generation.
+      </p>
+
+      <p>
+        Note some things at this point:
+        <ul>
+          <li>This is not the only way to read programming languages.</li>
+          <li>The stage of "analysis" nowadays contains several "substages", which are not important for now.</li>
+          <li>"Code" in "code generation" here refers to the direct assembly that a compiled language turns into.
+        This is, of course, not the only output of a compiler. There are certainly several more "code"s that a 
+        compiler may output (that are not pure assembly).</li>
+        </ul>
+      </p>
+
+      <p>
+        The stage of lexing will be left as a black box for now.
+        All that is important is that lexing turns a sequence of words, symbols, etc.
+        into a set of "tokens".
+      </p>
+
+      <p>
+        The stage of parsing takes the set of "tokens" from lexing, and attempts 
+        to give "meaning" to the "tokens". Which method is chosen depends on the design
+        of the parsing stage, the needs of the language developer, opinions, etc.
+      </p>
+
+      <p>The topic of this post, recursive descent, is one of the aforementioned techniques.</p>
+
+      <h3>Theory</h3>
+
+      <p>
+        Compiler design relies on a formal theory of languages. The significant aspect of this theory 
+        here is the concept of a grammar. A grammar consists of:
+      </p>
+
+
       <ul>
-        <li>This is not the only way to read programming languages.</li>
-        <li>The stage of "analysis" nowadays contains several "substages", which are not important for now.</li>
-        <li>"Code" in "code generation" here refers to the direct assembly that a compiled language turns into.
-      This is, of course, not the only output of a compiler. There are certainly several more "code"s that a 
-      compiler may output (that are not pure assembly).</li>
+        <li>Variables: symbols that can be expanded</li>
+        <li>Terminals: symbols that cannot be expanded</li>
+        <li>Rules: ways to expand variables into variables/terminals</li>
+        <li>Start: symbol that begins evaluation</li>
       </ul>
-    </p>
 
-    <p>
-      The stage of lexing will be left as a black box for now.
-      All that is important is that lexing turns a sequence of words, symbols, etc.
-      into a set of "tokens".
-    </p>
+      <p>
+        Here is an example: 
+      </p>
 
-    <p>
-      The stage of parsing takes the set of "tokens" from lexing, and attempts 
-      to give "meaning" to the "tokens". Which method is chosen depends on the design
-      of the parsing stage, the needs of the language developer, opinions, etc.
-    </p>
+      <p>
+      <pre>
+  Expr -&gt; Expr + Term | Term
+  Term -&gt; Term * Factor | Factor
+  Factor -&gt; (Expr) | id
+      </pre>
+      </p>
 
-    <p>The topic of this post, recursive descent, is one of the aforementioned techniques.</p>
+      <p>
+        Here, the <i>variables</i> are Expr, Term, and Factor, the <i>rules</i> are the
+        lines, the terminal being "id", and the start Expr.
+      </p>
 
-    <h3>Theory</h3>
+      <h3>The Algorithm</h3>
 
-    <p>
-      Compiler design relies on a formal theory of languages. The significant aspect of this theory 
-      here is the concept of a grammar. A grammar consists of:
-    </p>
+      <p>
+        With some theory provided, we cover the algorithm itself.
+      </p>
 
+      <p>
+        The basic idea is that, in code, each aspect of a formal grammar described above
+        becomes a part of the code. As in, the variables map to functions, terminals map
+        to tokens, and rules map to what goes on in the functions themselves.
+      </p>
 
-    <ul>
-      <li>Variables: symbols that can be expanded</li>
-      <li>Terminals: symbols that cannot be expanded</li>
-      <li>Rules: ways to expand variables into variables/terminals</li>
-      <li>Start: symbol that begins evaluation</li>
-    </ul>
+      <p>
+        As should be clear, this makes recursive descent a very easy to implement algorithm, 
+        as it closely matches the grammar with the code.
+      </p>
+      
+      <p>
+        However, this algorithm, like most, is not without its limitations.
+        We cover one of the limitations in this post.
+      </p> 
 
-    <p>
-      Here is an example: 
-    </p>
+      <h3>Left Recursion</h3>
 
-    <p>
-    <pre>
-Expr -&gt; Expr + Term | Term
-Term -&gt; Term * Factor | Factor
-Factor -&gt; (Expr) | id
-    </pre>
-    </p>
+      <p>
+        Recall the grammar from above. Notice the following rule:
+      </p>
 
-    <p>
-      Here, the <i>variables</i> are Expr, Term, and Factor, the <i>rules</i> are the
-      lines, the terminal being "id", and the start Expr.
-    </p>
+      <p>
+        Expr -&gt; Expr + Term | Term
+      </p>
 
-    <h3>The Algorithm</h3>
+      <p>
+        In recursive descent, this will be written in code as something like the following:
+      </p>
 
-    <p>
-      With some theory provided, we cover the algorithm itself.
-    </p>
+      <pre><code>
+  def parseExpr():
+      parseExpr()
+      match('+')
+      parseTerm() 
+      </code></pre>
 
-    <p>
-      The basic idea is that, in code, each aspect of a formal grammar described above
-      becomes a part of the code. As in, the variables map to functions, terminals map
-      to tokens, and rules map to what goes on in the functions themselves.
-    </p>
+      <p>
+        Notice how the function does not ever stop calling itself.
+        This is exactly what one of the biggest issues with recursive descent is.
+      </p>
 
-    <p>
-      As should be clear, this makes recursive descent a very easy to implement algorithm, 
-      as it closely matches the grammar with the code.
-    </p>
-    
-    <p>
-      However, this algorithm, like most, is not without its limitations.
-    </p>
+      <h3>Conclusion</h3>
 
-    <h3>Left Recursion</h3>
+      <p>
+        There is certainly more to recursive descent than this post.
+        However, I hope that this serves as a short and simple 
+        introduction to recursive descent and formal language
+        theory.
+      </p>
 
-    <p>
-      Recall the grammar from above. Notice the following rule:
-    </p>
-
-    <p>
-      Expr -&gt; Expr + Term | Term
-    </p>
-
-    <p>
-      In recursive descent, this will be written in code as something like the following:
-    </p>
-   
-    <pre><code>
-def parseExpr():
-    parseExpr()
-    match('+')
-    parseTerm() 
-    </code></pre>
-
-    <p>
-      Notice how the function does not ever stop calling itself.
-      This is exactly what one of the biggest issues with recursive descent is.
-    </p>
-
+    </main>
     <footer>
       <p>----------------------------------------------------------------------------------------------------</p>
       <p>The simple design of this page is by choice. I hope that is fine.</p>
-      <p>© 2026-&lt;the_end_of_time&gt; akwhjfdudje</p>
+      <p>copyright 2026-* akwhjfdudje</p>
     </footer>
   </body>
 </html>
