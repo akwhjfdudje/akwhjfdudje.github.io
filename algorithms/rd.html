@@ -3,31 +3,13 @@
   <head>
     <meta name="color-scheme" content="dark"> <!-- change this if you want. -->
     <title>akwhjfdudje's blog page</title>
-    <style>
-      body {
-        height: 100%;
-        font-family: "Times New Roman", Times, serif;
-        max-width: 100ch;
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-      }
-      ul {
-        list-style-type: none;
-        padding-left: 5ch;
-      }
-      li::before {
-        content: "> ";
-      }
-      main {
-        flex: 1;
-      }
-    </style>
+    <link rel="stylesheet" href="../format.css">
   </head>
   <body>
     <main>
 
       <h2>Recursive Descent</h2>
+      <time>April 13, 2026</time>
       <p>
         Hello. This post is about recursive descent.
       </p>
@@ -85,9 +67,9 @@
 
       <p>
       <pre>
-  Expr -&gt; Expr + Term | Term
-  Term -&gt; Term * Factor | Factor
-  Factor -&gt; (Expr) | id
+Expr -&gt; Expr + Term | Term
+Term -&gt; Term * Factor | Factor
+Factor -&gt; (Expr) | id
       </pre>
       </p>
 
@@ -124,19 +106,19 @@
         Recall the grammar from above. Notice the following rule:
       </p>
 
-      <p>
-        Expr -&gt; Expr + Term | Term
-      </p>
+      <pre>
+Expr -&gt; Expr + Term | Term
+      </pre>
 
       <p>
         In recursive descent, this will be written in code as something like the following:
       </p>
 
       <pre><code>
-  def parseExpr():
-      parseExpr()
-      match('+')
-      parseTerm() 
+def parseExpr():
+  parseExpr()
+  match('+')
+  parseTerm() 
       </code></pre>
 
       <p>
